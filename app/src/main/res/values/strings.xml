@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ClickerRPG</string>
+    <string name="playerHealth">Ваше здоровье</string>
+    <string name="playerMoney">Ваши деньги</string>
+</resources>

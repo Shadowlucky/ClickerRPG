@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@android:style/Theme.Black.NoTitleBar"
+    android:id="@+id/constraintLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:screenOrientation="portrait">
+
+    <ImageView
+        android:id="@+id/enemyImage"
+        android:layout_width="150dp"
+        android:layout_height="259dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.381" />
+
+    <TextView
+        android:id="@+id/enemyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enemyImage"
+        app:layout_constraintVertical_bias="0.148" />
+
+    <ProgressBar
+        android:id="@+id/playerHealthBar"
+        style="@style/enemyHealthBarStyle"
+        android:layout_width="146dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="@drawable/enemy_health_bar_style"
+        android:scrollbarSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerHealth" />
+
+    <ProgressBar
+        android:id="@+id/enemyHealthBar"
+        style="@style/enemyHealthBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:progressDrawable="@drawable/enemy_health_bar_style"
+        android:scrollbarSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enemyName"
+        app:layout_constraintVertical_bias="0.663" />
+
+    <TextView
+        android:id="@+id/playerHealthText"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerHealthBar"
+        app:layout_constraintEnd_toEndOf="@+id/playerHealthBar"
+        app:layout_constraintStart_toStartOf="@+id/playerHealthBar"
+        app:layout_constraintTop_toTopOf="@+id/playerHealthBar" />
+
+    <TextView
+        android:id="@+id/enemyHealthText"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/enemyHealthBar"
+        app:layout_constraintEnd_toEndOf="@+id/enemyHealthBar"
+        app:layout_constraintStart_toStartOf="@+id/enemyHealthBar"
+        app:layout_constraintTop_toTopOf="@+id/enemyHealthBar"
+        app:layout_constraintVertical_bias="0.555" />
+
+    <TextView
+        android:id="@+id/testText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/purple_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/playerHealth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playerHealth"
+        android:textColor="#FF0000"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/playerHealthBar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/nextEnemyButton"
+        android:layout_width="140dp"
+        android:layout_height="119dp"
+        android:clickable="false"
+        android:text="Следующий противник"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/enemyImage"
+        app:layout_constraintEnd_toEndOf="@+id/enemyImage"
+        app:layout_constraintStart_toStartOf="@+id/enemyImage"
+        app:layout_constraintTop_toTopOf="@+id/enemyImage" />
+
+    <TextView
+        android:id="@+id/moneyTextName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/playerMoney"
+        android:textColor="#FFC107"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/moneyText"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/moneyTextName"
+        app:layout_constraintStart_toStartOf="@+id/moneyTextName"
+        app:layout_constraintTop_toBottomOf="@+id/moneyTextName" />
+
+    <Button
+        android:id="@+id/shopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
