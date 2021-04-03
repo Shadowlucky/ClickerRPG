@@ -20,7 +20,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     int  enemyMaxHealth = 100, enemyHealth = 100, spriteCount = 0, enemyAttack = 1,
             enemyAttackSpeed = 3000, reward = 100;
-    int attackPower = 10, playerHealth = 100, playerMoney = 0, weaponStage = 1;
+    int attackPower = 10, playerHealth = 100, playerMoney = 100, weaponStage = 1;
     boolean enemyDefeated = false;
     ImageView enemyImage;
     String enemyName = "Enemy";
