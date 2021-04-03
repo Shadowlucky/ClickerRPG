@@ -1,5 +1,6 @@
 package com.example.clickerrpg;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -49,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK){
+            playerMoney = data.getIntExtra("money", 0);
+            weaponStage = data.getIntExtra("weapon", 1);
+            moneyText.setText(String.valueOf(playerMoney));
+        }
+    }
 
     @SuppressLint({"HandlerLeak", "SetTextI18n"})
     @Override
@@ -80,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, ShopActivity.class);
                 intent.putExtra("money", playerMoney);
                 intent.putExtra("weapon", weaponStage);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
         Attack();

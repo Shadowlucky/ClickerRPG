@@ -41,6 +41,10 @@ public class ShopActivity extends Activity {
                 //moneyText.setText(Integer.toString(playerMoney));
                 //weaponStage = intent.getIntExtra("weapon", 1);
                 //attackPower = weaponStage * 10;
+                Intent intent = new Intent();
+                intent.putExtra("money", playerMoney);
+                intent.putExtra("weapon", weaponStage);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -51,8 +55,8 @@ public class ShopActivity extends Activity {
                     playerMoney -= weaponPrice;
                     shopMoneyText.setText(Integer.toString(playerMoney));
                     weaponStage++;
-                    getIntent().putExtra("money", playerMoney);
-                    getIntent().putExtra("weapon", weaponStage);
+                    /*getIntent().putExtra("money", playerMoney);
+                    getIntent().putExtra("weapon", weaponStage);*/
                 }else Toast.makeText(getApplicationContext(), "Недостаточно средств", Toast.LENGTH_SHORT).show();
             }
         });
