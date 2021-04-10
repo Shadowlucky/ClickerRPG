@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">ClickerRPG</string>
     <string name="playerHealth">Ваше здоровье</string>
-    <string name="playerMoney">Ваши деньги</string>
+    <string name="playerMoney">Ваше золото</string>
+    <string name="continueText">Продолжить</string>
+    <string name="nextEnemy">Следующий противник</string>
+    <string name="healthPotionPrice">200</string>
 </resources>
