@@ -18,7 +18,8 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.381" />
+        app:layout_constraintVertical_bias="0.381"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/enemyName"
@@ -42,10 +43,26 @@
         android:layout_marginTop="20dp"
         android:max="100"
         android:progress="100"
-        android:progressDrawable="@drawable/enemy_health_bar_style"
+        android:progressDrawable="@drawable/health_bar_style"
         android:scrollbarSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playerHealth" />
+
+    <ProgressBar
+        android:id="@+id/levelBar"
+        style="@style/enemyHealthBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="@drawable/exp_bar_style"
+        android:scrollbarSize="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/levelText"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/enemyHealthBar"
@@ -54,14 +71,13 @@
         android:layout_height="30dp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:progressDrawable="@drawable/enemy_health_bar_style"
+        android:progressDrawable="@drawable/health_bar_style"
         android:scrollbarSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enemyName"
-        app:layout_constraintVertical_bias="0.663" />
+        app:layout_constraintVertical_bias="0.119" />
 
     <TextView
         android:id="@+id/playerHealthText"
@@ -111,7 +127,7 @@
         android:layout_width="140dp"
         android:layout_height="119dp"
         android:clickable="false"
-        android:text="Следующий противник"
+        android:text="@string/nextEnemy"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/enemyImage"
         app:layout_constraintEnd_toEndOf="@+id/enemyImage"
@@ -126,7 +142,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/playerMoney"
         android:textColor="#FFC107"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -135,17 +151,16 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/moneyTextName"
         app:layout_constraintStart_toStartOf="@+id/moneyTextName"
         app:layout_constraintTop_toBottomOf="@+id/moneyTextName" />
 
     <Button
         android:id="@+id/shopButton"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Магазин"
-        android:textSize="10sp"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -190,5 +205,23 @@
         app:layout_constraintStart_toEndOf="@+id/playerHealthBar"
         app:layout_constraintTop_toTopOf="@+id/playerHealthBar"
         app:srcCompat="@drawable/plus" />
+
+    <TextView
+        android:id="@+id/expText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/levelBar"
+        app:layout_constraintEnd_toEndOf="@+id/levelBar"
+        app:layout_constraintStart_toStartOf="@+id/levelBar"
+        app:layout_constraintTop_toTopOf="@+id/levelBar" />
+
+    <TextView
+        android:id="@+id/levelText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
