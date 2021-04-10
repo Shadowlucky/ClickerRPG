@@ -15,7 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class ShopActivity extends Activity {
-    int weaponStage, weaponPrice = (int)(weaponStage * 150), playerMoney, healthPotions, healthPotionsPrice = 200;
+    int weaponStage, playerMoney, healthPotions,
+            healthPotionsPrice = 200;
     Button backButton;
     TextView shopMoneyText, weaponPriceText;
     ImageView weaponImage, healthPotionShopImage;
@@ -27,16 +28,17 @@ public class ShopActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
-        /*constraintLayoutShop = findViewById(R.id.constraintLayoutShop);
-        constraintLayoutShop.setBackgroundResource(R.drawable.planks);*/
+        constraintLayoutShop = findViewById(R.id.constraintLayoutShop);
         backButton = findViewById(R.id.backButton);
         shopMoneyText = findViewById(R.id.shopMoneyText);
         weaponImage = findViewById(R.id.weaponImage);
         weaponPriceText = findViewById(R.id.weaponPriceText);
+        healthPotionShopImage = findViewById(R.id.healthPotionShopImage);
+
+        constraintLayoutShop.setBackgroundResource(R.drawable.planks);
         weaponImage.setImageResource(R.drawable.sword);
         weaponStage = getIntent().getIntExtra("weapon", weaponStage);
         weaponPriceText.setText(String.valueOf((int)(weaponStage * 150)));
-        healthPotionShopImage = findViewById(R.id.healthPotionShopImage);
         healthPotionShopImage.setImageResource(R.drawable.healthpotion);
         playerMoney = getIntent().getIntExtra("money", playerMoney);
         healthPotions = getIntent().getIntExtra("healthPotions", 0);
@@ -55,14 +57,11 @@ public class ShopActivity extends Activity {
         weaponImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (playerMoney >= weaponPrice){
-                    playerMoney -= weaponPrice;
+                if (playerMoney >= (int)(weaponStage * 150)){
+                    playerMoney -= (int)(weaponStage * 150);
                     shopMoneyText.setText(Integer.toString(playerMoney));
                     weaponStage++;
-                    weaponPrice = (int)(weaponStage * 150);
-                    weaponPriceText.setText(String.valueOf(weaponPrice));
-                    /*getIntent().putExtra("money", playerMoney);
-                    getIntent().putExtra("weapon", weaponStage);*/
+                    weaponPriceText.setText(String.valueOf((int)(weaponStage * 150)));
                 }else Toast.makeText(getApplicationContext(), "Недостаточно средств", Toast.LENGTH_SHORT).show();
 
             }
