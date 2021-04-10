@@ -21,11 +21,13 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     int  enemyMaxHealth = 100, enemyHealth = 100, spriteCount = 0, enemyAttack = 1,
             enemyAttackSpeed = 3000, reward = 100;
-    int attackPower = 10, playerHealth = 100, playerMoney = 100, weaponStage = 1;
+    int attackPower = 10, playerHealth = 100, playerMoney = 100, weaponStage = 1, healthPotions = 0,
+            playerMaxHealth = 100;
     boolean enemyDefeated = false;
-    ImageView enemyImage;
+    ImageView enemyImage, plusHealthImage;
     String enemyName = "Enemy";
-    TextView enemyHealthText, enemyNameText, testText, playerHealthText, moneyText;
+    TextView enemyHealthText, enemyNameText, testText, playerHealthText, moneyText,
+            healthPotionCounterText, swordLevelText;
     ProgressBar enemyHealthBar;
     ConstraintLayout constraintLayout1;
     Button nextEnemyButton, shopButton;
@@ -54,9 +56,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK){
-            playerMoney = data.getIntExtra("money", 0);
-            weaponStage = data.getIntExtra("weapon", 1);
+            playerMoney = data.getIntExtra("money", playerMoney);
+            weaponStage = data.getIntExtra("weapon", weaponStage);
+            healthPotions += data.getIntExtra("healthPotions", healthPotions);
+            attackPower = weaponStage * 10;
             moneyText.setText(String.valueOf(playerMoney));
+            swordLevelText.setText(String.valueOf(weaponStage));
+            healthPotionCounterText.setText(String.valueOf(healthPotions));
         }
     }
 
@@ -70,8 +76,14 @@ public class MainActivity extends AppCompatActivity {
         constraintLayout1.setBackgroundResource(R.drawable.forest);
         playerHealthText = findViewById(R.id.playerHealthText);
         playerHealthText.setText(Integer.toString(playerHealth));
+        plusHealthImage = findViewById(R.id.plusHealthImage);
+        plusHealthImage.setImageResource(R.drawable.plus);
         moneyText = findViewById(R.id.moneyText);
         moneyText.setText(Integer.toString(playerMoney));
+        healthPotionCounterText = findViewById(R.id.healthPotionCounterText);
+        healthPotionCounterText.setText(String.valueOf(healthPotions));
+        swordLevelText = findViewById(R.id.swordLevelText);
+        swordLevelText.setText(String.valueOf(weaponStage));
         enemyImage = findViewById(R.id.enemyImage);
         enemyHealthText = findViewById(R.id.enemyHealthText);
         enemyNameText = findViewById(R.id.enemyName);
@@ -90,7 +102,21 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, ShopActivity.class);
                 intent.putExtra("money", playerMoney);
                 intent.putExtra("weapon", weaponStage);
+                intent.putExtra("healthPotions", healthPotions);
                 startActivityForResult(intent, 1);
+            }
+        });
+        plusHealthImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (healthPotions > 0){
+                    healthPotions -= 1;
+                    healthPotionCounterText.setText(String.valueOf(healthPotions));
+                    playerHealth += 50;
+                    if (playerHealth > playerMaxHealth)playerHealth = playerMaxHealth;
+                    playerHealthBar.setProgress(playerHealth);
+                    playerHealthText.setText(String.valueOf(playerHealth));
+                }
             }
         });
         Attack();
@@ -176,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 enemyHealthBar.setVisibility(View.VISIBLE);
                 enemyNameText.setVisibility(View.VISIBLE);
                 enemyHealth = 100;
-                enemyHealthText.setText(Integer.toString(enemyHealth));
+                enemyHealthText.setText(String.valueOf(enemyHealth));
                 enemyHealthBar.setProgress(enemyHealth);
             }
         });
