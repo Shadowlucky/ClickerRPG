@@ -3,4 +3,4 @@
     android:duration="400"
     android:fromXDelta="0"
     android:interpolator="@anim/move_cycles"
-    android:toXDelta="30%" />
+    android:toXDelta="25%" />

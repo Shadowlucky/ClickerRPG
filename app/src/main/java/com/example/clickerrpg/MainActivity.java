@@ -20,8 +20,8 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     int  enemyMaxHealth = 100, enemyHealth = 100, enemyAttack = 10,
-            enemyAttackSpeed = 3000, rewardMoney = 100, rewardExp = 50;
-    int attackPower = 10, playerLevel = 1, playerExp = 0, nextLvl = 100,
+            enemyAttackSpeed = 3000, rewardMoney = 100, rewardXp = 50;
+    int attackPower = 10, playerLevel = 1, playerXp = 0, nextLvl = 100,
             playerHealth = 100, playerMoney = 100, weaponStage = 1, healthPotions = 0,
             playerMaxHealth = 100, HEALTHPOTIONPLUS = 50;
     boolean enemyDefeated = false, isInShop = false;
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     int diff = max - min;
     int r = random.nextInt(diff + 1);
     Handler handler;
+    
 
 
     class AttackThread extends Thread{
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK){
             playerMoney = data.getIntExtra("money", playerMoney);
             weaponStage = data.getIntExtra("weapon", weaponStage);
-            healthPotions += data.getIntExtra("healthPotions", healthPotions);
+            healthPotions = data.getIntExtra("healthPotions", healthPotions);
             attackPower = weaponStage * 10;
             moneyText.setText(String.valueOf(playerMoney));
             swordLevelText.setText(String.valueOf(weaponStage));
@@ -67,12 +68,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @SuppressLint({"HandlerLeak", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+        //Authorize();
         constraintLayout1 = findViewById(R.id.constraintLayout1);
         playerHealthText = findViewById(R.id.playerHealthText);
         plusHealthImage = findViewById(R.id.plusHealthImage);
@@ -89,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         levelText = findViewById(R.id.expText);
         nextEnemyButton = findViewById(R.id.nextEnemyButton);
         playerHealthBar = findViewById(R.id.playerHealthBar);
-
         constraintLayout1.setBackgroundResource(R.drawable.forest);
         playerHealthText.setText(Integer.toString(playerHealth));
         plusHealthImage.setImageResource(R.drawable.plus);
@@ -97,13 +99,13 @@ public class MainActivity extends AppCompatActivity {
         healthPotionCounterText.setText(String.valueOf(healthPotions));
         swordLevelText.setText(String.valueOf(weaponStage));
         enemyHealthBar.setMax(enemyMaxHealth);
-        enemyImage.setImageResource(R.drawable.enemy1);
+        enemyImage.setImageResource(R.drawable.wolf2);
         enemyNameText.setText(enemyName);
         enemyHealthText.setText(Integer.toString(enemyHealth));
         enemyHealthBar.setProgress(enemyHealth);
         levelText.setText(String.valueOf(playerLevel));
-        levelBar.setMax(nextLvl);
-        levelBar.setProgress(playerExp);
+        levelBar.setMax(100);
+        levelBar.setProgress(playerXp - (playerLevel - 1) * 100);
 
         shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,15 +172,14 @@ public class MainActivity extends AppCompatActivity {
                     enemyHealthBar.setVisibility(View.INVISIBLE);
                     enemyNameText.setVisibility(View.INVISIBLE);
                     playerMoney += rewardMoney;
-                    playerExp += rewardExp;
-                    if (playerExp >= nextLvl){
+                    playerXp += rewardXp;
+                    if (playerXp >= nextLvl){
                         playerLevel++;
-                        playerExp -= rewardExp;
                         nextLvl += 100;
-                        levelBar.setMax(nextLvl);
+                        levelBar.setMax(100);
                         levelText.setText(String.valueOf(playerLevel));
                     }
-                    levelBar.setProgress(playerExp);
+                    levelBar.setProgress(playerXp - (playerLevel - 1) * 100);
                     moneyText.setText(Integer.toString(playerMoney));
                 }
                 enemyHealthText.setText(Integer.toString(enemyHealth));
@@ -204,5 +205,10 @@ public class MainActivity extends AppCompatActivity {
                 enemyHealthBar.setProgress(enemyHealth);
             }
         });
+    }
+
+    void Authorize(){
+        Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+        startActivityForResult(intent, 1);
     }
 }

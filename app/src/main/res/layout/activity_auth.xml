@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Spinner
+        android:id="@+id/profileSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="32dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chooseProfileText" />
+
+    <Button
+        android:id="@+id/authBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginBottom="32dp"
+        android:text="Войти"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/newProfileBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/newProfileBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginBottom="128dp"
+        android:text="Новый профиль"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/profileNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="128dp"
+        android:editable="true"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/authBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chooseNameText" />
+
+    <Button
+        android:id="@+id/createButton"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:text="Создать"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chooseProfileText" />
+
+    <TextView
+        android:id="@+id/chooseProfileText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Выберите профиль"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/chooseNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="Выберите имя"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/authMnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="24dp"
+        android:text="Золото: "
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileSpinner" />
+
+    <TextView
+        android:id="@+id/authLvlText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Уровень:   Опыт:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/authMnText"
+        app:layout_constraintTop_toBottomOf="@+id/authMnText" />
+
+    <TextView
+        android:id="@+id/authHPText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="Текущее здоровье:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/authLvlText"
+        app:layout_constraintTop_toBottomOf="@+id/authLvlText" />
+
+    <TextView
+        android:id="@+id/authMHPText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Максимальное здоровье"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/authHPText"
+        app:layout_constraintTop_toBottomOf="@+id/authHPText" />
+
+    <TextView
+        android:id="@+id/authWeaponText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Уровень оружия: "
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/authMHPText"
+        app:layout_constraintTop_toBottomOf="@+id/authMHPText" />
+
+    <TextView
+        android:id="@+id/authPotionsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Количество зелий: "
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/authWeaponText"
+        app:layout_constraintTop_toBottomOf="@+id/authWeaponText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
