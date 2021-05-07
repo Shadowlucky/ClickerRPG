@@ -9,9 +9,11 @@
 
     <Spinner
         android:id="@+id/profileSpinner"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_marginStart="42dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="42dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,12 +23,14 @@
         android:id="@+id/authBtn"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         android:text="Войти"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/newProfileBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/authPotionsText" />
 
     <Button
         android:id="@+id/newProfileBtn"
@@ -70,7 +74,7 @@
         android:id="@+id/chooseProfileText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:text="Выберите профиль"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
