@@ -6,6 +6,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,9 +19,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    private DBHelper mDBHelper;
+    private SQLiteDatabase mDb;
     int  enemyMaxHealth = 100, enemyHealth = 100, enemyAttack = 10,
             enemyAttackSpeed = 3000, rewardMoney = 100, rewardXp = 50;
     int attackPower = 10, playerLevel = 1, playerXp = 0, nextLvl = 100,
@@ -38,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
     int diff = max - min;
     int r = random.nextInt(diff + 1);
     Handler handler;
-    
+    ArrayList<Enemy> enemies = new ArrayList<>();
+    int cnt_enemies = 0;
+
 
 
     class AttackThread extends Thread{
@@ -75,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
-        //Authorize();
         constraintLayout1 = findViewById(R.id.constraintLayout1);
         playerHealthText = findViewById(R.id.playerHealthText);
         plusHealthImage = findViewById(R.id.plusHealthImage);
@@ -107,6 +115,30 @@ public class MainActivity extends AppCompatActivity {
         levelBar.setMax(100);
         levelBar.setProgress(playerXp - (playerLevel - 1) * 100);
 
+        mDBHelper = new DBHelper(this);
+
+        try {
+            mDBHelper.updateDataBase();
+        } catch (IOException mIOException) {
+            throw new Error("UnableToUpdateDatabase");
+        }
+        try {
+            mDb = mDBHelper.getWritableDatabase();
+        } catch (SQLException mSQLException) {
+            throw mSQLException;
+        }
+
+        /*Cursor cursor = mDb.rawQuery("SELECT * FROM enemies", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            enemies.add(new Enemy(cursor.getInt(0), cursor.getString(1),
+                    cursor.getInt(2), cursor.getInt(3),
+                    cursor.getInt(4), cursor.getInt(5),
+                    cursor.getInt(6), cursor.getInt(7)));
+            cnt_enemies++;
+            cursor.moveToNext();
+        }*/
+
         shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         Attack();
         new AttackThread().start();
         handler = new Handler(){
@@ -154,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
         }else enemyImage.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.shake_horizontal));
     }
-
 
     void Attack(){
         enemyImage.setOnClickListener(new View.OnClickListener() {
@@ -205,10 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 enemyHealthBar.setProgress(enemyHealth);
             }
         });
-    }
 
-    void Authorize(){
-        Intent intent = new Intent(MainActivity.this, AuthActivity.class);
-        startActivityForResult(intent, 1);
+
     }
 }
