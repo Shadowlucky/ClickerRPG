@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
     private DBHelper mDBHelper;
@@ -40,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout constraintLayout1;
     Button nextEnemyButton, shopButton;
     Random random = new Random(1);
-    int min = 1;
-    int max = 200;
-    int diff = max - min;
+    int min = 1, max = 200, diff = max - min;
     int r = random.nextInt(diff + 1);
+    int id, enemy_id = 0;
     Handler handler;
+    TreeMap<Integer, Profile> profiles;
     ArrayList<Enemy> enemies = new ArrayList<>();
     int cnt_enemies = 0;
 
@@ -100,20 +102,11 @@ public class MainActivity extends AppCompatActivity {
         levelText = findViewById(R.id.expText);
         nextEnemyButton = findViewById(R.id.nextEnemyButton);
         playerHealthBar = findViewById(R.id.playerHealthBar);
+        profiles = new TreeMap<>();
+        enemies = new ArrayList<>();
+        id = getIntent().getIntExtra("id", 1);
+
         constraintLayout1.setBackgroundResource(R.drawable.forest);
-        playerHealthText.setText(Integer.toString(playerHealth));
-        plusHealthImage.setImageResource(R.drawable.plus);
-        moneyText.setText(Integer.toString(playerMoney));
-        healthPotionCounterText.setText(String.valueOf(healthPotions));
-        swordLevelText.setText(String.valueOf(weaponStage));
-        enemyHealthBar.setMax(enemyMaxHealth);
-        enemyImage.setImageResource(R.drawable.wolf2);
-        enemyNameText.setText(enemyName);
-        enemyHealthText.setText(Integer.toString(enemyHealth));
-        enemyHealthBar.setProgress(enemyHealth);
-        levelText.setText(String.valueOf(playerLevel));
-        levelBar.setMax(100);
-        levelBar.setProgress(playerXp - (playerLevel - 1) * 100);
 
         mDBHelper = new DBHelper(this);
 
@@ -127,6 +120,55 @@ public class MainActivity extends AppCompatActivity {
         } catch (SQLException mSQLException) {
             throw mSQLException;
         }
+
+        Cursor cursor = mDb.rawQuery("SELECT * FROM profiles", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            if (cursor.getInt(0) == id){
+                testText.setText(String.valueOf(id));
+                playerMoney = cursor.getInt(2);
+                playerXp = cursor.getInt(3);
+                playerLevel = 1;
+                for (int i = 100, j = playerXp; j >= 0; i+=100){
+                    j -= i;
+                    playerLevel++;
+                }
+                playerHealth = cursor.getInt(4);
+                playerMaxHealth = cursor.getInt(5);
+                weaponStage = cursor.getInt(6);
+                healthPotions = cursor.getInt(7);
+                attackPower = weaponStage * 10;
+            }
+            cursor.moveToNext();
+        }
+
+        cursor = mDb.rawQuery("SELECT * FROM enemies", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            if (cursor.getInt(0) == enemy_id)
+                enemyName = cursor.getString(1);
+                rewardMoney = cursor.getInt(3);
+                rewardXp = cursor.getInt(4);
+                enemyHealth = cursor.getInt(5);
+                enemyAttack = cursor.getInt(6);
+                enemyAttackSpeed = cursor.getInt(7);
+                enemyImage.setImageBitmap(BitmapFactory.decodeByteArray(cursor.getBlob(8), 0, cursor.getBlob(8).length));
+            cursor.moveToNext();
+        }
+
+        playerHealthText.setText(Integer.toString(playerHealth));
+        plusHealthImage.setImageResource(R.drawable.plus);
+        moneyText.setText(Integer.toString(playerMoney));
+        healthPotionCounterText.setText(String.valueOf(healthPotions));
+        swordLevelText.setText(String.valueOf(weaponStage));
+        enemyHealthBar.setMax(enemyMaxHealth);
+        //enemyImage.setImageResource(R.drawable.wolf2);
+        enemyNameText.setText(enemyName);
+        enemyHealthText.setText(Integer.toString(enemyHealth));
+        enemyHealthBar.setProgress(enemyHealth);
+        levelText.setText(String.valueOf(playerLevel));
+        levelBar.setMax(100);
+        levelBar.setProgress(playerXp - (playerLevel - 1) * 100);
 
         /*Cursor cursor = mDb.rawQuery("SELECT * FROM enemies", null);
         cursor.moveToFirst();
