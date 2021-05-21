@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -35,21 +36,20 @@ public class MainActivity extends AppCompatActivity {
             playerMaxHealth = 100, HEALTHPOTIONPLUS = 50;
     boolean enemyDefeated = false, isInShop = false;
     ImageView enemyImage, plusHealthImage;
-    String enemyName = "Enemy";
+    String enemyName = "Enemy", playerName;
     TextView enemyHealthText, enemyNameText, testText, playerHealthText, moneyText,
             healthPotionCounterText, swordLevelText, levelText;
     ProgressBar enemyHealthBar, playerHealthBar, levelBar;
     ConstraintLayout constraintLayout1;
     Button nextEnemyButton, shopButton;
-    Random random = new Random(1);
+    Random random = new Random(1), random_id = new Random();
     int min = 1, max = 200, diff = max - min;
     int r = random.nextInt(diff + 1);
-    int id, enemy_id = 0;
+    int id, enemy_id = random_id.nextInt(5);
     Handler handler;
     TreeMap<Integer, Profile> profiles;
     ArrayList<Enemy> enemies = new ArrayList<>();
-    int cnt_enemies = 0;
-
+    ContentValues cv = new ContentValues();
 
 
     class AttackThread extends Thread{
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             playerMoney = data.getIntExtra("money", playerMoney);
             weaponStage = data.getIntExtra("weapon", weaponStage);
             healthPotions = data.getIntExtra("healthPotions", healthPotions);
-            attackPower = weaponStage * 10;
+            attackPower = (int)(weaponStage * 1.5);
             moneyText.setText(String.valueOf(playerMoney));
             swordLevelText.setText(String.valueOf(weaponStage));
             healthPotionCounterText.setText(String.valueOf(healthPotions));
@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         while (!cursor.isAfterLast()) {
             if (cursor.getInt(0) == id){
                 testText.setText(String.valueOf(id));
+                playerName = cursor.getString(1);
                 playerMoney = cursor.getInt(2);
                 playerXp = cursor.getInt(3);
                 playerLevel = 1;
@@ -141,45 +142,38 @@ public class MainActivity extends AppCompatActivity {
             }
             cursor.moveToNext();
         }
+        cursor.close();
 
         cursor = mDb.rawQuery("SELECT * FROM enemies", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            if (cursor.getInt(0) == enemy_id)
+            if (cursor.getInt(0) == enemy_id) {
                 enemyName = cursor.getString(1);
                 rewardMoney = cursor.getInt(3);
                 rewardXp = cursor.getInt(4);
+                enemyMaxHealth = cursor.getInt(5);
                 enemyHealth = cursor.getInt(5);
                 enemyAttack = cursor.getInt(6);
                 enemyAttackSpeed = cursor.getInt(7);
                 enemyImage.setImageBitmap(BitmapFactory.decodeByteArray(cursor.getBlob(8), 0, cursor.getBlob(8).length));
+            }
             cursor.moveToNext();
         }
+        cursor.close();
 
         playerHealthText.setText(Integer.toString(playerHealth));
         plusHealthImage.setImageResource(R.drawable.plus);
         moneyText.setText(Integer.toString(playerMoney));
         healthPotionCounterText.setText(String.valueOf(healthPotions));
         swordLevelText.setText(String.valueOf(weaponStage));
-        enemyHealthBar.setMax(enemyMaxHealth);
-        //enemyImage.setImageResource(R.drawable.wolf2);
+        enemyHealthBar.setMax(enemyHealth);
         enemyNameText.setText(enemyName);
         enemyHealthText.setText(Integer.toString(enemyHealth));
         enemyHealthBar.setProgress(enemyHealth);
         levelText.setText(String.valueOf(playerLevel));
-        levelBar.setMax(100);
+        levelBar.setMax(playerMaxHealth);
         levelBar.setProgress(playerXp - (playerLevel - 1) * 100);
 
-        /*Cursor cursor = mDb.rawQuery("SELECT * FROM enemies", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            enemies.add(new Enemy(cursor.getInt(0), cursor.getString(1),
-                    cursor.getInt(2), cursor.getInt(3),
-                    cursor.getInt(4), cursor.getInt(5),
-                    cursor.getInt(6), cursor.getInt(7)));
-            cnt_enemies++;
-            cursor.moveToNext();
-        }*/
 
         shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("money", playerMoney);
                 intent.putExtra("weapon", weaponStage);
                 intent.putExtra("healthPotions", healthPotions);
+                SaveResult();
                 startActivityForResult(intent, 1);
             }
         });
@@ -202,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
                     if (playerHealth > playerMaxHealth)playerHealth = playerMaxHealth;
                     playerHealthBar.setProgress(playerHealth);
                     playerHealthText.setText(String.valueOf(playerHealth));
+                    SaveResult();
                 }
             }
         });
@@ -215,11 +211,36 @@ public class MainActivity extends AppCompatActivity {
               super.handleMessage(message);
               if (!enemyDefeated && !isInShop){
                 playerHealth -= enemyAttack;
+                SaveResult();
                 playerHealthBar.setProgress(playerHealth);
                 playerHealthText.setText(Integer.toString(playerHealth));
           }}
         };
 
+    }
+
+    protected void onPause() {
+        super.onPause();
+        SaveResult();
+        mDb.update(DBHelper.TABLE, cv, DBHelper.COLUMN_ID + "=" + id, null);
+    }
+
+    protected void onResume() {
+        super.onResume();
+        SaveResult();
+        mDb.update(DBHelper.TABLE, cv, DBHelper.COLUMN_ID + "=" + id, null);
+    }
+
+    protected void onStop() {
+        super.onStop();
+        SaveResult();
+        mDb.update(DBHelper.TABLE, cv, DBHelper.COLUMN_ID + "=" + id, null);
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        SaveResult();
+        mDb.close();
     }
 
     void spriteAnimation(){
@@ -228,6 +249,16 @@ public class MainActivity extends AppCompatActivity {
                     R.anim.shake_vertical));
         }else enemyImage.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.shake_horizontal));
+    }
+
+    void SaveResult(){
+        cv.put(DBHelper.COLUMN_MONEY, playerMoney);
+        cv.put(DBHelper.COLUMN_XP, playerXp);
+        cv.put(DBHelper.COLUMN_HEALTH, playerHealth);
+        cv.put(DBHelper.COLUMN_MAXHEALTH, playerMaxHealth);
+        cv.put(DBHelper.COLUMN_WEAPON, weaponStage);
+        cv.put(DBHelper.COLUMN_POTIONS, healthPotions);
+        mDb.update(DBHelper.TABLE, cv, DBHelper.COLUMN_ID + "=" + id, null);
     }
 
     void Attack(){
@@ -260,12 +291,29 @@ public class MainActivity extends AppCompatActivity {
                 enemyHealthBar.setProgress(enemyHealth);
                 spriteAnimation();
                 r = random.nextInt(diff + 1);
+                SaveResult();
             }
         }
         );
         nextEnemyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                enemy_id = random_id.nextInt(5);
+                Cursor cursor = mDb.rawQuery("SELECT * FROM enemies", null);
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    if (cursor.getInt(0) == enemy_id) {
+                        enemyName = cursor.getString(1);
+                        rewardMoney = cursor.getInt(3);
+                        rewardXp = cursor.getInt(4);
+                        enemyMaxHealth = cursor.getInt(5);
+                        enemyHealth = cursor.getInt(5);
+                        enemyAttack = cursor.getInt(6);
+                        enemyAttackSpeed = cursor.getInt(7);
+                        enemyImage.setImageBitmap(BitmapFactory.decodeByteArray(cursor.getBlob(8), 0, cursor.getBlob(8).length));
+                    }
+                    cursor.moveToNext();
+                }
                 enemyDefeated = false;
                 enemyImage.setVisibility(View.VISIBLE);
                 enemyImage.setClickable(true);
@@ -274,12 +322,20 @@ public class MainActivity extends AppCompatActivity {
                 enemyHealthText.setVisibility(View.VISIBLE);
                 enemyHealthBar.setVisibility(View.VISIBLE);
                 enemyNameText.setVisibility(View.VISIBLE);
-                enemyHealth = 100;
+                enemyHealth = enemyMaxHealth;
                 enemyHealthText.setText(String.valueOf(enemyHealth));
                 enemyHealthBar.setProgress(enemyHealth);
+                enemyNameText.setText(enemyName);
+                enemyHealthBar.setMax(enemyMaxHealth);
             }
         });
 
 
     }
 }
+
+
+/*TODO:
+    Сделать GAME OVER
+    Добавить новые фоны
+*/

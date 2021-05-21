@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:text="Войти"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/newProfileBtn"
@@ -33,13 +33,24 @@
         app:layout_constraintTop_toBottomOf="@+id/authPotionsText" />
 
     <Button
+        android:id="@+id/delBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginBottom="16dp"
+        android:text="Удалить профиль"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/newProfileBtn"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_marginBottom="128dp"
+        android:layout_marginBottom="64dp"
         android:text="Новый профиль"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/delBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -55,8 +66,7 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/authBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chooseNameText" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/createButton"
@@ -80,19 +90,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/chooseNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:text="Выберите имя"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="invisible" />
 
     <TextView
         android:id="@+id/authMnText"

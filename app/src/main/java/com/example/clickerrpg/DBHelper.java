@@ -13,9 +13,18 @@ import java.io.OutputStream;
 
 
 public class DBHelper extends SQLiteOpenHelper {
-    private static String DB_NAME = "MainDB.db";
+    private static final String DB_NAME = "MainDB.db";
+    static final String TABLE = "profiles";
     private static String DB_PATH = "";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 5;
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_MONEY = "money";
+    public static final String COLUMN_XP = "xp";
+    public static final String COLUMN_HEALTH = "health";
+    public static final String COLUMN_MAXHEALTH = "maxhealth";
+    public static final String COLUMN_WEAPON = "weapon";
+    public static final String COLUMN_POTIONS = "potions";
 
     private SQLiteDatabase mDataBase;
     private final Context mContext;
@@ -90,12 +99,22 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL("CREATE TABLE profiles (" + COLUMN_ID
+                + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME
+                + " TEXT, " + COLUMN_MONEY + " INTEGER, " + COLUMN_XP
+                + " INTEGER, " + COLUMN_HEALTH + " INTEGER, " + COLUMN_MAXHEALTH
+                + " INTEGER, " + COLUMN_WEAPON + " INTEGER, " + COLUMN_POTIONS
+                + " INTEGER);");
+        // добавление начальных данных
+        /*db.execSQL("INSERT INTO "+ DB_NAME +" (" + COLUMN_NAME
+                + ", " + COLUMN_MONEY + ", " + COLUMN_XP + ", " + COLUMN_HEALTH + ", "
+                + COLUMN_MAXHEALTH + ", " + COLUMN_WEAPON + ", " + COLUMN_POTIONS
+                + ") VALUES (0, 'Newbie', 100, 0, 100, 100, 1, 0);");*/
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (newVersion > oldVersion)
-            mNeedUpdate = true;
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
+        onCreate(db);
     }
 }

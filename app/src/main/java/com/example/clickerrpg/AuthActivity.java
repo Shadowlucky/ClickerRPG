@@ -1,6 +1,9 @@
 package com.example.clickerrpg;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,8 +30,38 @@ public class AuthActivity extends AppCompatActivity {
     ArrayList<String> profile_names;
     ArrayList<Integer> count;
     TreeMap<String, Profile> profiles;
-    Button newProfileBtn, authBtn, createButton;
+    Button newProfileBtn, authBtn, createButton, delBtn;
+    ContentValues cv = new ContentValues();
     private int profile_id;
+    ArrayAdapter<String> adapter;
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    protected void onDestroy(){
+        super.onDestroy();
+        /*Cursor cursor = mDb.rawQuery("SELECT * FROM profiles", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            if (cursor.getInt(0) == profile_id){
+                cv.put(DBHelper.COLUMN_MONEY, cursor.getInt(2));
+                cv.put(DBHelper.COLUMN_XP, cursor.getInt(3));
+                cv.put(DBHelper.COLUMN_HEALTH, cursor.getInt(4));
+                cv.put(DBHelper.COLUMN_MAXHEALTH, cursor.getInt(5));
+                cv.put(DBHelper.COLUMN_WEAPON, cursor.getInt(6));
+                cv.put(DBHelper.COLUMN_POTIONS, cursor.getInt(7));
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        mDb.update(DBHelper.TABLE, cv, DBHelper.COLUMN_ID + "=" + profile_id, null);
+        mDb.close();*/
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +79,13 @@ public class AuthActivity extends AppCompatActivity {
         authPotionsText = findViewById(R.id.authPotionsText);
         chooseProfileText = findViewById(R.id.chooseProfileText);
         profileNameText = findViewById(R.id.profileNameText);
-        chooseNameText = findViewById(R.id.chooseNameText);
+        //chooseNameText = findViewById(R.id.chooseNameText);
         authBtn = findViewById(R.id.authBtn);
         createButton = findViewById(R.id.createButton);
+        delBtn = findViewById(R.id.delBtn);
         newProfileBtn = findViewById(R.id.newProfileBtn);
         profileSpinner = findViewById(R.id.profileSpinner);
+
 
         authBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,16 +124,60 @@ public class AuthActivity extends AppCompatActivity {
                 authBtn.setVisibility(View.INVISIBLE);
                 profileNameText.setVisibility(View.VISIBLE);
                 createButton.setVisibility(View.VISIBLE);
-                chooseNameText.setVisibility(View.VISIBLE);
+                //chooseNameText.setVisibility(View.VISIBLE);
             }
         });
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                cv.put(DBHelper.COLUMN_NAME, profileNameText.getText().toString());
+                cv.put(DBHelper.COLUMN_MONEY, 100);
+                cv.put(DBHelper.COLUMN_XP, 0);
+                cv.put(DBHelper.COLUMN_HEALTH, 100);
+                cv.put(DBHelper.COLUMN_MAXHEALTH, 100);
+                cv.put(DBHelper.COLUMN_WEAPON, 1);
+                cv.put(DBHelper.COLUMN_POTIONS, 0);
+                profile_id = (int)mDb.insert(DBHelper.TABLE, null, cv);
+                if (profile_id > 0) {
+                    Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+                    intent.putExtra("id", profile_id);
+                    startActivityForResult(intent, 1);
+                }
             }
         });
+
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDb.delete(DBHelper.TABLE, "_id = ?", new String[]{String.valueOf(profile_id)});
+                /*adapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, profile_names.toArray(new String[profile_names.size()]));
+                adapter.setDropDownViewResource(R.layout.spinner_item);
+                profileSpinner.setAdapter(adapter);
+                AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String item = (String) parent.getItemAtPosition(position);// Получаем выбранный объект
+                        authMnText.setText("Золото: " + profiles.get(item).getMoney());
+                        authLvlText.setText("Опыт: " + profiles.get(item).getXp());
+                        authHPText.setText("Текущее здоровье: " + profiles.get(item).getHealth());
+                        authMHPText.setText("Максимальное здоровье: " + profiles.get(item).getMaxHealth());
+                        authWeaponText.setText("Уровень оружия: " + profiles.get(item).getWeaponStage());
+                        authPotionsText.setText("Количество зелий: " + profiles.get(item).getPotions());
+                        profile_id = profiles.get(item).getId();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                };
+                profileSpinner.setOnItemSelectedListener(itemSelectedListener);*/
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
+
         mDBHelper = new DBHelper(this);
 
         try {
@@ -122,9 +201,10 @@ public class AuthActivity extends AppCompatActivity {
                     cursor.getInt(6), cursor.getInt(7)));
             cursor.moveToNext();
         }
+        cursor.close();
 
         profileSpinner = findViewById(R.id.profileSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, profile_names.toArray(new String[profile_names.size()]));
+        adapter = new ArrayAdapter<>(this, R.layout.spinner_item, profile_names.toArray(new String[profile_names.size()]));
         adapter.setDropDownViewResource(R.layout.spinner_item);
         profileSpinner.setAdapter(adapter);
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
@@ -142,6 +222,19 @@ public class AuthActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                profileSpinner.setVisibility(View.INVISIBLE);
+                authMnText.setVisibility(View.INVISIBLE);
+                authLvlText.setVisibility(View.INVISIBLE);
+                authHPText.setVisibility(View.INVISIBLE);
+                authMHPText.setVisibility(View.INVISIBLE);
+                authWeaponText.setVisibility(View.INVISIBLE);
+                authPotionsText.setVisibility(View.INVISIBLE);
+                chooseProfileText.setVisibility(View.INVISIBLE);
+                newProfileBtn.setVisibility(View.INVISIBLE);
+                authBtn.setVisibility(View.INVISIBLE);
+                profileNameText.setVisibility(View.VISIBLE);
+                createButton.setVisibility(View.VISIBLE);
+                //chooseNameText.setVisibility(View.VISIBLE);
             }
         };
         profileSpinner.setOnItemSelectedListener(itemSelectedListener);
