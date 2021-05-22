@@ -2,7 +2,6 @@ package com.example.clickerrpg;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,9 +9,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 
 public class ShopActivity extends Activity {
     int weaponStage, playerMoney, healthPotions,
@@ -57,8 +56,8 @@ public class ShopActivity extends Activity {
         weaponImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (playerMoney >= (int)(weaponStage * 150)){
-                    playerMoney -= (int)(weaponStage * 150);
+                if (playerMoney >= weaponStage * 150){
+                    playerMoney -= weaponStage * 150;
                     shopMoneyText.setText(Integer.toString(playerMoney));
                     weaponStage++;
                     weaponPriceText.setText(String.valueOf((int)(weaponStage * 150)));

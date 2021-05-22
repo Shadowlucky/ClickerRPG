@@ -39,8 +39,6 @@
         android:layout_height="32dp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="20dp"
         android:max="100"
         android:progress="100"
         android:progressDrawable="@drawable/health_bar_style"
@@ -56,12 +54,11 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
         android:max="100"
         android:progress="100"
         android:progressDrawable="@drawable/exp_bar_style"
         android:scrollbarSize="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/levelText"
+        app:layout_constraintBottom_toTopOf="@+id/AuthImage"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
@@ -103,15 +100,6 @@
         app:layout_constraintVertical_bias="0.555" />
 
     <TextView
-        android:id="@+id/testText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/purple_700"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shopButton" />
-
-    <TextView
         android:id="@+id/playerHealth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -138,13 +126,12 @@
         android:id="@+id/moneyTextName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/playerMoney"
         android:textColor="#FFC107"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/playerHealth" />
 
     <TextView
         android:id="@+id/moneyText"
@@ -155,15 +142,6 @@
         app:layout_constraintEnd_toEndOf="@+id/moneyTextName"
         app:layout_constraintStart_toStartOf="@+id/moneyTextName"
         app:layout_constraintTop_toBottomOf="@+id/moneyTextName" />
-
-    <Button
-        android:id="@+id/shopButton"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/swordImage"
@@ -177,9 +155,8 @@
         android:id="@+id/healthPotionImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playerHealthBar"
+        app:layout_constraintTop_toBottomOf="@+id/plusHealthImage"
         app:srcCompat="@drawable/healthpotion" />
 
     <TextView
@@ -187,6 +164,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/healthPotionImage"
         app:layout_constraintTop_toBottomOf="@+id/playerHealthBar" />
 
@@ -195,6 +173,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/swordImage"
         app:layout_constraintTop_toBottomOf="@+id/healthPotionCounterText" />
 
@@ -202,9 +181,18 @@
         android:id="@+id/plusHealthImage"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        app:layout_constraintStart_toEndOf="@+id/playerHealthBar"
-        app:layout_constraintTop_toTopOf="@+id/playerHealthBar"
+        app:layout_constraintEnd_toEndOf="@+id/playerHealthBar"
+        app:layout_constraintStart_toStartOf="@+id/playerHealthBar"
+        app:layout_constraintTop_toBottomOf="@+id/playerHealthBar"
         app:srcCompat="@drawable/plus" />
+
+    <TextView
+        android:id="@+id/lvlText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/levelBar"
+        app:layout_constraintStart_toStartOf="@+id/levelBar"
+        app:layout_constraintTop_toTopOf="@+id/levelBar" />
 
     <TextView
         android:id="@+id/expText"
@@ -213,15 +201,24 @@
         app:layout_constraintBottom_toBottomOf="@+id/levelBar"
         app:layout_constraintEnd_toEndOf="@+id/levelBar"
         app:layout_constraintStart_toStartOf="@+id/levelBar"
-        app:layout_constraintTop_toTopOf="@+id/levelBar" />
+        app:layout_constraintTop_toBottomOf="@+id/lvlText" />
 
-    <TextView
-        android:id="@+id/levelText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+    <ImageView
+        android:id="@+id/shopImage"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        app:layout_constraintEnd_toStartOf="@+id/moneyTextName"
+        app:layout_constraintHorizontal_bias="0.316"
+        app:layout_constraintStart_toEndOf="@+id/playerHealth"
+        app:layout_constraintTop_toTopOf="@+id/playerHealth"
+        app:srcCompat="@drawable/shop" />
+
+    <ImageView
+        android:id="@+id/AuthImage"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

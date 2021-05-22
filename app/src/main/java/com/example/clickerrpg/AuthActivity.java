@@ -30,10 +30,11 @@ public class AuthActivity extends AppCompatActivity {
     ArrayList<String> profile_names;
     ArrayList<Integer> count;
     TreeMap<String, Profile> profiles;
-    Button newProfileBtn, authBtn, createButton, delBtn;
+    Button newProfileBtn, authBtn, createButton, delBtn, backBtn;
     ContentValues cv = new ContentValues();
     private int profile_id;
     ArrayAdapter<String> adapter;
+    int c = 0;
 
 
     @Override
@@ -42,24 +43,38 @@ public class AuthActivity extends AppCompatActivity {
 
     }
 
-    protected void onDestroy(){
-        super.onDestroy();
-        /*Cursor cursor = mDb.rawQuery("SELECT * FROM profiles", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            if (cursor.getInt(0) == profile_id){
-                cv.put(DBHelper.COLUMN_MONEY, cursor.getInt(2));
-                cv.put(DBHelper.COLUMN_XP, cursor.getInt(3));
-                cv.put(DBHelper.COLUMN_HEALTH, cursor.getInt(4));
-                cv.put(DBHelper.COLUMN_MAXHEALTH, cursor.getInt(5));
-                cv.put(DBHelper.COLUMN_WEAPON, cursor.getInt(6));
-                cv.put(DBHelper.COLUMN_POTIONS, cursor.getInt(7));
-            }
-            cursor.moveToNext();
-        }
-        cursor.close();
-        mDb.update(DBHelper.TABLE, cv, DBHelper.COLUMN_ID + "=" + profile_id, null);
-        mDb.close();*/
+    public void setVisibleCreate(){
+        profileSpinner.setVisibility(View.INVISIBLE);
+        authMnText.setVisibility(View.INVISIBLE);
+        authLvlText.setVisibility(View.INVISIBLE);
+        authHPText.setVisibility(View.INVISIBLE);
+        authMHPText.setVisibility(View.INVISIBLE);
+        authWeaponText.setVisibility(View.INVISIBLE);
+        authPotionsText.setVisibility(View.INVISIBLE);
+        chooseProfileText.setVisibility(View.INVISIBLE);
+        newProfileBtn.setVisibility(View.INVISIBLE);
+        authBtn.setVisibility(View.INVISIBLE);
+        profileNameText.setVisibility(View.VISIBLE);
+        createButton.setVisibility(View.VISIBLE);
+        delBtn.setVisibility(View.INVISIBLE);
+        backBtn.setVisibility(View.VISIBLE);
+    }
+
+    public void setVisibleAuth(){
+        profileSpinner.setVisibility(View.VISIBLE);
+        authMnText.setVisibility(View.VISIBLE);
+        authLvlText.setVisibility(View.VISIBLE);
+        authHPText.setVisibility(View.VISIBLE);
+        authMHPText.setVisibility(View.VISIBLE);
+        authWeaponText.setVisibility(View.VISIBLE);
+        authPotionsText.setVisibility(View.VISIBLE);
+        chooseProfileText.setVisibility(View.VISIBLE);
+        newProfileBtn.setVisibility(View.VISIBLE);
+        authBtn.setVisibility(View.VISIBLE);
+        delBtn.setVisibility(View.VISIBLE);
+        profileNameText.setVisibility(View.INVISIBLE);
+        createButton.setVisibility(View.INVISIBLE);
+        backBtn.setVisibility(View.INVISIBLE);
     }
 
 
@@ -83,6 +98,7 @@ public class AuthActivity extends AppCompatActivity {
         authBtn = findViewById(R.id.authBtn);
         createButton = findViewById(R.id.createButton);
         delBtn = findViewById(R.id.delBtn);
+        backBtn = findViewById(R.id.BackBtn);
         newProfileBtn = findViewById(R.id.newProfileBtn);
         profileSpinner = findViewById(R.id.profileSpinner);
 
@@ -96,34 +112,17 @@ public class AuthActivity extends AppCompatActivity {
             }
         });
 
-        /*profileSpinner.setVisibility(View.VISIBLE);
-        authMnText.setVisibility(View.VISIBLE);
-        authLvlText.setVisibility(View.VISIBLE);
-        authHPText.setVisibility(View.VISIBLE);
-        authMHPText.setVisibility(View.VISIBLE);
-        authWeaponText.setVisibility(View.VISIBLE);
-        authPotionsText.setVisibility(View.VISIBLE);
-        chooseProfileText.setVisibility(View.VISIBLE);
-        newProfileBtn.setVisibility(View.VISIBLE);
-        authBtn.setVisibility(View.VISIBLE);
-        profileNameText.setVisibility(View.INVISIBLE);
-        createButton.setVisibility(View.INVISIBLE);
-        chooseNameText.setVisibility(View.INVISIBLE);*/
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setVisibleAuth();
+            }
+        });
+
         newProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                profileSpinner.setVisibility(View.INVISIBLE);
-                authMnText.setVisibility(View.INVISIBLE);
-                authLvlText.setVisibility(View.INVISIBLE);
-                authHPText.setVisibility(View.INVISIBLE);
-                authMHPText.setVisibility(View.INVISIBLE);
-                authWeaponText.setVisibility(View.INVISIBLE);
-                authPotionsText.setVisibility(View.INVISIBLE);
-                chooseProfileText.setVisibility(View.INVISIBLE);
-                newProfileBtn.setVisibility(View.INVISIBLE);
-                authBtn.setVisibility(View.INVISIBLE);
-                profileNameText.setVisibility(View.VISIBLE);
-                createButton.setVisibility(View.VISIBLE);
+                setVisibleCreate();
                 //chooseNameText.setVisibility(View.VISIBLE);
             }
         });
@@ -131,18 +130,20 @@ public class AuthActivity extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cv.put(DBHelper.COLUMN_NAME, profileNameText.getText().toString());
-                cv.put(DBHelper.COLUMN_MONEY, 100);
-                cv.put(DBHelper.COLUMN_XP, 0);
-                cv.put(DBHelper.COLUMN_HEALTH, 100);
-                cv.put(DBHelper.COLUMN_MAXHEALTH, 100);
-                cv.put(DBHelper.COLUMN_WEAPON, 1);
-                cv.put(DBHelper.COLUMN_POTIONS, 0);
-                profile_id = (int)mDb.insert(DBHelper.TABLE, null, cv);
-                if (profile_id > 0) {
-                    Intent intent = new Intent(AuthActivity.this, MainActivity.class);
-                    intent.putExtra("id", profile_id);
-                    startActivityForResult(intent, 1);
+                if (!profileNameText.getText().toString().equals("")){
+                    cv.put(DBHelper.COLUMN_NAME, profileNameText.getText().toString());
+                    cv.put(DBHelper.COLUMN_MONEY, 100);
+                    cv.put(DBHelper.COLUMN_XP, 0);
+                    cv.put(DBHelper.COLUMN_HEALTH, 100);
+                    cv.put(DBHelper.COLUMN_MAXHEALTH, 100);
+                    cv.put(DBHelper.COLUMN_WEAPON, 1);
+                    cv.put(DBHelper.COLUMN_POTIONS, 0);
+                    profile_id = (int)mDb.insert(DBHelper.TABLE, null, cv);
+                    if (profile_id > 0) {
+                        Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+                        intent.putExtra("id", profile_id);
+                        startActivityForResult(intent, 1);
+                    }
                 }
             }
         });
@@ -151,27 +152,6 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mDb.delete(DBHelper.TABLE, "_id = ?", new String[]{String.valueOf(profile_id)});
-                /*adapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, profile_names.toArray(new String[profile_names.size()]));
-                adapter.setDropDownViewResource(R.layout.spinner_item);
-                profileSpinner.setAdapter(adapter);
-                AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String item = (String) parent.getItemAtPosition(position);// Получаем выбранный объект
-                        authMnText.setText("Золото: " + profiles.get(item).getMoney());
-                        authLvlText.setText("Опыт: " + profiles.get(item).getXp());
-                        authHPText.setText("Текущее здоровье: " + profiles.get(item).getHealth());
-                        authMHPText.setText("Максимальное здоровье: " + profiles.get(item).getMaxHealth());
-                        authWeaponText.setText("Уровень оружия: " + profiles.get(item).getWeaponStage());
-                        authPotionsText.setText("Количество зелий: " + profiles.get(item).getPotions());
-                        profile_id = profiles.get(item).getId();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                };
-                profileSpinner.setOnItemSelectedListener(itemSelectedListener);*/
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
@@ -194,6 +174,7 @@ public class AuthActivity extends AppCompatActivity {
         Cursor cursor = mDb.rawQuery("SELECT * FROM profiles", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
+            c++;
             profile_names.add(cursor.getString(1));
             profiles.put(cursor.getString(1), new Profile(cursor.getInt(0), cursor.getString(1),
                     cursor.getInt(2), cursor.getInt(3),
@@ -222,21 +203,15 @@ public class AuthActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                profileSpinner.setVisibility(View.INVISIBLE);
-                authMnText.setVisibility(View.INVISIBLE);
-                authLvlText.setVisibility(View.INVISIBLE);
-                authHPText.setVisibility(View.INVISIBLE);
-                authMHPText.setVisibility(View.INVISIBLE);
-                authWeaponText.setVisibility(View.INVISIBLE);
-                authPotionsText.setVisibility(View.INVISIBLE);
-                chooseProfileText.setVisibility(View.INVISIBLE);
-                newProfileBtn.setVisibility(View.INVISIBLE);
-                authBtn.setVisibility(View.INVISIBLE);
-                profileNameText.setVisibility(View.VISIBLE);
-                createButton.setVisibility(View.VISIBLE);
-                //chooseNameText.setVisibility(View.VISIBLE);
             }
         };
         profileSpinner.setOnItemSelectedListener(itemSelectedListener);
+        if (c == 0){
+            setVisibleCreate();
+            backBtn.setVisibility(View.INVISIBLE);
+            //chooseNameText.setVisibility(View.VISIBLE);
+        }
+
+
     }
 }
