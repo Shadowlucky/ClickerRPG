@@ -110,17 +110,17 @@
         app:layout_constraintStart_toStartOf="@+id/playerHealthBar"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/nextEnemyButton"
         android:layout_width="140dp"
-        android:layout_height="119dp"
-        android:clickable="false"
-        android:text="@string/nextEnemy"
+        android:layout_height="120dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/enemyImage"
         app:layout_constraintEnd_toEndOf="@+id/enemyImage"
         app:layout_constraintStart_toStartOf="@+id/enemyImage"
-        app:layout_constraintTop_toTopOf="@+id/enemyImage" />
+        app:layout_constraintTop_toTopOf="@+id/enemyImage"
+        app:layout_constraintVertical_bias="0.507"
+        app:srcCompat="@drawable/nextenemybuttonstyle" />
 
     <TextView
         android:id="@+id/moneyTextName"
@@ -138,6 +138,7 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
+        android:textColor="#FFEB3B"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/moneyTextName"
         app:layout_constraintStart_toStartOf="@+id/moneyTextName"
@@ -164,6 +165,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/healthPotionImage"
         app:layout_constraintTop_toBottomOf="@+id/playerHealthBar" />
@@ -173,6 +175,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/swordImage"
         app:layout_constraintTop_toBottomOf="@+id/healthPotionCounterText" />
@@ -220,5 +223,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/ic_menu_revert" />
+
+    <TextView
+        android:id="@+id/nextEnemyText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Следующий противник"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/nextEnemyButton"
+        app:layout_constraintEnd_toEndOf="@+id/nextEnemyButton"
+        app:layout_constraintStart_toStartOf="@+id/nextEnemyButton"
+        app:layout_constraintTop_toTopOf="@+id/nextEnemyButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

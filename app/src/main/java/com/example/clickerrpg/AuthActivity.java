@@ -2,6 +2,7 @@ package com.example.clickerrpg;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,12 +11,15 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.style.UpdateLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -25,6 +29,7 @@ public class AuthActivity extends AppCompatActivity {
     private SQLiteDatabase mDb;
     Spinner profileSpinner;
     Context mContext;
+    ConstraintLayout authLayout;
     TextView authMnText, authLvlText, authHPText, authMHPText, authWeaponText,
             authPotionsText, chooseProfileText, profileNameText, chooseNameText;
     ArrayList<String> profile_names;
@@ -40,7 +45,17 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        recreate();
+    }
 
+    int countLvl(int xp){
+        int lvl = 1;
+        while (xp >= (int)(100 * Math.pow(2, lvl))){
+            xp -= (int)(100 * Math.pow(2, lvl));
+            lvl++;
+        }
+        if (xp >= 200)return lvl + 1;
+        else return 1;
     }
 
     public void setVisibleCreate(){
@@ -57,7 +72,7 @@ public class AuthActivity extends AppCompatActivity {
         profileNameText.setVisibility(View.VISIBLE);
         createButton.setVisibility(View.VISIBLE);
         delBtn.setVisibility(View.INVISIBLE);
-        backBtn.setVisibility(View.VISIBLE);
+        chooseNameText.setVisibility(View.VISIBLE);
     }
 
     public void setVisibleAuth(){
@@ -74,7 +89,15 @@ public class AuthActivity extends AppCompatActivity {
         delBtn.setVisibility(View.VISIBLE);
         profileNameText.setVisibility(View.INVISIBLE);
         createButton.setVisibility(View.INVISIBLE);
-        backBtn.setVisibility(View.INVISIBLE);
+        chooseNameText.setVisibility(View.INVISIBLE);
+    }
+
+    protected void onResume(){
+        super.onResume();
+        if (c != 0){
+            setVisibleAuth();
+            backBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -82,10 +105,13 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
         mContext = this;
         profile_names = new ArrayList<>();
         profiles = new TreeMap<>();
         count = new ArrayList<>();
+        authLayout = findViewById(R.id.AuthLayout);
+        authLayout.setBackgroundResource(R.drawable.mainbackground);
         authMnText = findViewById(R.id.authMnText);
         authLvlText = findViewById(R.id.authLvlText);
         authHPText = findViewById(R.id.authHPText);
@@ -94,7 +120,7 @@ public class AuthActivity extends AppCompatActivity {
         authPotionsText = findViewById(R.id.authPotionsText);
         chooseProfileText = findViewById(R.id.chooseProfileText);
         profileNameText = findViewById(R.id.profileNameText);
-        //chooseNameText = findViewById(R.id.chooseNameText);
+        chooseNameText = findViewById(R.id.chooseNameText);
         authBtn = findViewById(R.id.authBtn);
         createButton = findViewById(R.id.createButton);
         delBtn = findViewById(R.id.delBtn);
@@ -116,6 +142,7 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setVisibleAuth();
+                backBtn.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -123,7 +150,7 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setVisibleCreate();
-                //chooseNameText.setVisibility(View.VISIBLE);
+                backBtn.setVisibility(View.VISIBLE);
             }
         });
 
@@ -131,6 +158,7 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!profileNameText.getText().toString().equals("")){
+                    c++;
                     cv.put(DBHelper.COLUMN_NAME, profileNameText.getText().toString());
                     cv.put(DBHelper.COLUMN_MONEY, 100);
                     cv.put(DBHelper.COLUMN_XP, 0);
@@ -183,17 +211,22 @@ public class AuthActivity extends AppCompatActivity {
             cursor.moveToNext();
         }
         cursor.close();
+        if (c == 0 || profiles.size() == 0 || profile_names.size() == 0){
+            setVisibleCreate();
+            backBtn.setVisibility(View.INVISIBLE);
+        }
 
-        profileSpinner = findViewById(R.id.profileSpinner);
+
+
         adapter = new ArrayAdapter<>(this, R.layout.spinner_item, profile_names.toArray(new String[profile_names.size()]));
         adapter.setDropDownViewResource(R.layout.spinner_item);
         profileSpinner.setAdapter(adapter);
-        AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        profileSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = (String) parent.getItemAtPosition(position);// Получаем выбранный объект
                 authMnText.setText("Золото: " + profiles.get(item).getMoney());
-                authLvlText.setText("Опыт: " + profiles.get(item).getXp());
+                authLvlText.setText("Опыт: " + profiles.get(item).getXp() + " Уровень: " + countLvl(profiles.get(item).getXp()));
                 authHPText.setText("Текущее здоровье: " + profiles.get(item).getHealth());
                 authMHPText.setText("Максимальное здоровье: " + profiles.get(item).getMaxHealth());
                 authWeaponText.setText("Уровень оружия: " + profiles.get(item).getWeaponStage());
@@ -204,14 +237,6 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
-        };
-        profileSpinner.setOnItemSelectedListener(itemSelectedListener);
-        if (c == 0){
-            setVisibleCreate();
-            backBtn.setVisibility(View.INVISIBLE);
-            //chooseNameText.setVisibility(View.VISIBLE);
-        }
-
-
+        });
     }
 }

@@ -5,4 +5,17 @@
     <string name="continueText">Продолжить</string>
     <string name="nextEnemy">Следующий противник</string>
     <string name="healthPotionPrice">200</string>
+    <string name="Login">Войти</string>
+    <string name="Back">Назад</string>
+    <string name="delProf">Удалить профиль</string>
+    <string name="newProf">Новый профиль</string>
+    <string name="create">Создать</string>
+    <string name="chooseProf">Выберите профиль</string>
+    <string name="gold">Золото:</string>
+    <string name="lvlexp">Уровень: Опыт:</string>
+    <string name="health">Текущее здоровье:</string>
+    <string name="maxHealth">Максимальное здоровье</string>
+    <string name="weaponStage">Уровень оружия:</string>
+    <string name="countPotions">Количество зелий:</string>
+    <string name="chooseName">Выберите имя</string>
 </resources>

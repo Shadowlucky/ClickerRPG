@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
+    android:id="@+id/AuthLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:screenOrientation="portrait"
     tools:context=".MainActivity">
 
     <Spinner
@@ -23,11 +24,9 @@
         android:id="@+id/authBtn"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="16dp"
-        android:text="Войти"
+        android:layout_marginTop="24dp"
+        android:text="@string/Login"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/newProfileBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/authPotionsText" />
@@ -37,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_marginBottom="16dp"
-        android:text="Назад"
+        android:text="@string/Back"
         android:textSize="30sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,23 +47,23 @@
         android:id="@+id/delBtn"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_marginBottom="16dp"
-        android:text="Удалить профиль"
+        android:layout_marginTop="16dp"
+        android:text="@string/delProf"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newProfileBtn" />
 
     <Button
         android:id="@+id/newProfileBtn"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_marginBottom="64dp"
-        android:text="Новый профиль"
+        android:layout_marginTop="16dp"
+        android:text="@string/newProf"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/delBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/authBtn" />
 
     <EditText
         android:id="@+id/profileNameText"
@@ -84,20 +83,31 @@
         android:id="@+id/createButton"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:text="Создать"
+        android:layout_marginTop="24dp"
+        android:text="@string/create"
+        android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chooseProfileText" />
+        app:layout_constraintTop_toBottomOf="@+id/authPotionsText" />
+
+    <TextView
+        android:id="@+id/chooseNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chooseName"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/profileSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/chooseProfileText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Выберите профиль"
+        android:text="@string/chooseProf"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="42dp"
         android:layout_marginTop="24dp"
-        android:text="Золото: "
+        android:text="@string/gold"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileSpinner" />
@@ -118,7 +128,7 @@
         android:id="@+id/authLvlText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Уровень:   Опыт:"
+        android:text="@string/lvlexp"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/authMnText"
         app:layout_constraintTop_toBottomOf="@+id/authMnText" />
@@ -128,7 +138,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:text="Текущее здоровье:"
+        android:text="@string/health"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/authLvlText"
         app:layout_constraintTop_toBottomOf="@+id/authLvlText" />
@@ -137,7 +147,7 @@
         android:id="@+id/authMHPText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Максимальное здоровье"
+        android:text="@string/maxHealth"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/authHPText"
         app:layout_constraintTop_toBottomOf="@+id/authHPText" />
@@ -146,7 +156,7 @@
         android:id="@+id/authWeaponText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Уровень оружия: "
+        android:text="@string/weaponStage"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/authMHPText"
         app:layout_constraintTop_toBottomOf="@+id/authMHPText" />
@@ -155,7 +165,7 @@
         android:id="@+id/authPotionsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Количество зелий: "
+        android:text="@string/countPotions"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/authWeaponText"
         app:layout_constraintTop_toBottomOf="@+id/authWeaponText" />

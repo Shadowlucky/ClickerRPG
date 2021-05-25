@@ -16,7 +16,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "MainDB.db";
     static final String TABLE = "profiles";
     private static String DB_PATH = "";
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 6;
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_MONEY = "money";
@@ -99,12 +99,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE profiles (" + COLUMN_ID
+       /* db.execSQL("CREATE TABLE profiles (" + COLUMN_ID
                 + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME
                 + " TEXT, " + COLUMN_MONEY + " INTEGER, " + COLUMN_XP
                 + " INTEGER, " + COLUMN_HEALTH + " INTEGER, " + COLUMN_MAXHEALTH
                 + " INTEGER, " + COLUMN_WEAPON + " INTEGER, " + COLUMN_POTIONS
-                + " INTEGER);");
+                + " INTEGER);");*/
         // добавление начальных данных
         /*db.execSQL("INSERT INTO "+ DB_NAME +" (" + COLUMN_NAME
                 + ", " + COLUMN_MONEY + ", " + COLUMN_XP + ", " + COLUMN_HEALTH + ", "

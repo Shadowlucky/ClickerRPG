@@ -5,13 +5,17 @@
     android:id="@+id/constraintLayoutShop"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:screenOrientation="portrait"
     android:background="@drawable/planks">
+
 
     <TextView
         android:id="@+id/shopMoneyText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40sp"
+        android:background="@drawable/goldframe"
         android:maxLength="16"
+        android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/continueText"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,18 +55,24 @@
     <TextView
         android:id="@+id/weaponPriceText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50sp"
+        android:background="@drawable/pricetag"
+        android:textAlignment="center"
         android:textColor="#000000"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/weaponImage"
         app:layout_constraintStart_toStartOf="@+id/weaponImage"
         app:layout_constraintTop_toBottomOf="@+id/weaponImage" />
 
     <TextView
         android:id="@+id/healthPotionPriceText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="50sp"
+        android:background="@drawable/pricetag"
         android:text="@string/healthPotionPrice"
+        android:textAlignment="center"
         android:textColor="#000000"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/healthPotionShopImage"
         app:layout_constraintStart_toStartOf="@+id/healthPotionShopImage"
         app:layout_constraintTop_toBottomOf="@+id/healthPotionShopImage" />
