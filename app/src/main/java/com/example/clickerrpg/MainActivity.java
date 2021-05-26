@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     int attackPower = 10, playerLevel = 1, playerXp = 0,
             playerHealth = 100, playerMoney = 100, weaponStage = 1, healthPotions = 0,
             playerMaxHealth = 100, HEALTHPOTIONPLUS = 50;
-    boolean paused = false;
+    boolean paused = false, enemyDefeated = false;
     ImageView enemyImage, plusHealthImage, shopImage, authImage;
     String enemyName = "Enemy", playerName;
     TextView enemyHealthText, enemyNameText, playerHealthText, moneyText,
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             moneyText.setText(String.valueOf(playerMoney));
             swordLevelText.setText(String.valueOf(weaponStage));
             healthPotionCounterText.setText(String.valueOf(healthPotions));
-            paused = false;
+            if (!enemyDefeated) paused = false;
         }
     }
 
@@ -137,12 +136,12 @@ public class MainActivity extends AppCompatActivity {
                 playerMoney = cursor.getInt(2);
                 playerXp = cursor.getInt(3);
                 playerLevel = countLvl(playerXp);
-                Update();
                 playerHealth = cursor.getInt(4);
                 playerMaxHealth = cursor.getInt(5);
                 weaponStage = cursor.getInt(6);
                 healthPotions = cursor.getInt(7);
                 attackPower = weaponStage * 2;
+                Update();
             }
             cursor.moveToNext();
         }
@@ -270,7 +269,6 @@ public class MainActivity extends AppCompatActivity {
         weaponStage = 1;
         playerLevel = 1;
         healthPotions = 0;
-        paused = true;
         enemyImage.setVisibility(View.INVISIBLE);
         enemyImage.setClickable(false);
         nextEnemyButton.setVisibility(View.VISIBLE);
@@ -326,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
                 if (enemyHealth <= 0){
                     Toast.makeText(getApplicationContext(), "Вы получили " + rewardMoney +
                             " Золота и " + rewardXp + " Опыта", Toast.LENGTH_SHORT).show();
+                    enemyDefeated = true;
                     paused = true;
                     enemyImage.setVisibility(View.INVISIBLE);
                     enemyImage.setClickable(false);
@@ -381,6 +380,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     cursor.moveToNext();
                 }
+                enemyDefeated = false;
                 paused = false;
                 enemyImage.setVisibility(View.VISIBLE);
                 enemyImage.setClickable(true);
